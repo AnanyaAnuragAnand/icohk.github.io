@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery – ICOHK</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .gallery-intro {
+            text-align: center;
+            color: #555;
+            font-size: 1rem;
+            margin: 0 20px 10px;
+        }
+
+        .gallery-grid {
+            columns: 3 280px;
+            column-gap: 16px;
+            padding: 0 20px 30px;
+        }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            position: relative;
+            cursor: pointer;
+            background: #d9ead3;
+        }
+
+        .gallery-item img {
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: transform 0.35s ease, filter 0.35s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.04);
+            filter: brightness(0.82);
+        }
+
+        .gallery-item .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(44,110,73,0.88));
+            color: #fff;
+            font-size: 0.82rem;
+            padding: 24px 12px 10px;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .gallery-item:hover .caption {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        #lightbox.active {
+            display: flex;
+        }
+
+        #lightbox img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 6px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+        }
+
+        #lightbox .lb-caption {
+            color: #d9ead3;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        #lightbox .lb-close {
+            position: fixed;
+            top: 20px;
+            right: 28px;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            font-weight: 300;
+            background: none;
+            border: none;
+        }
+
+        #lightbox .lb-close:hover {
+            color: #d9ead3;
+        }
+
+        @media (max-width: 500px) {
+            .gallery-grid { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Photo Gallery</h1>
+    <p>Moments from our camps, communities, and mission</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="activities.html">Activities</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<p class="gallery-intro">
+    A glimpse of ICOHK's work across communities — hover over a photo to read more, click to enlarge.
+</p>
+
+<div class="gallery-grid">
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img
+            src="gallery/child_clinic_for_children_under_age_of_5.jpg"
+            alt="Child Clinic"
+            data-caption="Child Clinic – Free health check-ups for children under the age of 5"
+        >
+        <div class="caption">Child Clinic (Under Age 5)</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img
+            src="gallery/mother_and_child.jpg"
+            alt="Mother and Child Care"
+            data-caption="Mother & Child Care – Nutrition counselling and immunisation support"
+        >
+        <div class="caption">Mother & Child Care</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img
+            src="gallery/family_welfare.jpg"
+            alt="Family Welfare"
+            data-caption="Family Welfare Services – Holistic support for families in rural communities"
+        >
+        <div class="caption">Family Welfare</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img
+            src="gallery/health camp.jpg"
+            alt="Health Camp"
+            data-caption="General Health Camp – Free consultations and medicines for all"
+        >
+        <div class="caption">Health Camp</div>
+    </div>
+
+    <div class="gallery-item" onclick="openLightbox(this)">
+        <img
+            src="gallery/health_and_hygiene.jpg"
+            alt="Health and Hygiene"
+            data-caption="Health & Hygiene Awareness – Promoting sanitation and clean practices"
+        >
+        <div class="caption">Health & Hygiene</div>
+    </div>
+
+</div>
+
+<!-- Lightbox overlay -->
+<div id="lightbox" onclick="closeLightbox(event)">
+    <button class="lb-close" onclick="closeLightbox()">&times;</button>
+    <img id="lb-img" src="" alt="">
+    <p class="lb-caption" id="lb-caption"></p>
+</div>
+
+<footer>
+    <p>People • Society • Community — Together for Health for All</p>
+</footer>
+
+<script>
+    function openLightbox(item) {
+        const img = item.querySelector('img');
+        document.getElementById('lb-img').src = img.src;
+        document.getElementById('lb-img').alt = img.alt;
+        document.getElementById('lb-caption').textContent = img.dataset.caption || img.alt;
+        document.getElementById('lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e) {
+        if (!e || e.target !== document.getElementById('lb-img')) {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+    });
+</script>
+
+</body>
+</html>
